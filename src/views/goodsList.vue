@@ -5,9 +5,9 @@
                 <img class="logo" src="../assets/imgs/logo.png" alt="">
                 <div class="fl">
                     <p v-if="nickName">欢迎您{{nickName}}</p>
-                    <p @click="loginOut()" v-if="nickName">登出</p>
-                    <p @click="loginIn()" v-else>登陆</p>
-                    <p @click="toCartList()">购物车</p>
+                    <p class="pointer" @click="loginOut()" v-if="nickName">登出</p>
+                    <p class="pointer" @click="loginIn()" v-else>登陆</p>
+                    <p class="pointer" @click="toCartList()">购物车</p>
                 </div>
         </div>
         <div class="main">
@@ -47,6 +47,7 @@
 </template>
 <script>
 import login from "@/components/login"
+import urlJson from '@/http/url'
 export default {
     data(){
         return{
@@ -89,7 +90,7 @@ export default {
         },
         //验证是否已经登陆过
         checkLogin(){
-            this.$ajax.get('api/users/checkLogin').then((res)=>{
+            this.$ajax.get(urlJson.checkLogin).then((res)=>{
                 if(res.data.status === '0'){
                     console.log('验证cookie是否存在',res)
                     this.nickName = res.data.result
@@ -103,7 +104,7 @@ export default {
             this.loginOff = true
         },
         loginOut(){
-            this.$ajax.post('api/users/logout').then((res)=>{
+            this.$ajax.post(urlJson.logout).then((res)=>{
                 console.log('res',res)
                 if(res.data.status == '0'){
                     this.nickName = ''
@@ -119,7 +120,7 @@ export default {
         },
         //加入购物车
         addCart(id){
-            this.$ajax.post('api/goods/addCart',{
+            this.$ajax.post(urlJson.addCart,{
                 productId:id,
             }).then((res)=>{
                 console.log('res',res)
@@ -156,9 +157,9 @@ export default {
             this.priceLevel = x.val
             this.getData()
         },
-        //获得数据
+        //获得商品数据
         getData(){
-            this.$ajax.get('api/goods',{
+            this.$ajax.get(urlJson.goods,{
                 params:{
                     page: this.page,
                     pageSize: this.pageSize,

@@ -3,13 +3,14 @@
   <div @click="close()" class="login_cover"></div>
   <div class="login_main">
       <p>Login in</p>
-      <input v-model="name"  type="text" class="login_name" placeholder="User Name">
-      <input v-model="pwd"  type="text" class="login_name" placeholder="Password">
+      <input v-model="name"  type="text" class="login_name login_left" placeholder="User Name">
+      <input v-model="pwd"  type="text" class="login_name login_left" placeholder="Password">
       <button @click="loginIn()" class="login_name login_btn">登陆</button>
     </div>
 </div>
 </template>
 <script>
+import urlJson from '@/http/url'
 export default {
     data(){
         return{
@@ -32,7 +33,7 @@ export default {
       },
       loginIn(){
         console.log('',this.name,this.pwd)
-        this.$ajax.post('api/users/login',{
+        this.$ajax.post(urlJson.login,{
             userName: this.name,
             userPwd: this.pwd,
         }).then((res)=>{
@@ -77,6 +78,9 @@ export default {
       height: 50px;
       border: 1PX solid #c4c4c4;
       margin-top: 20px;
+    }
+    .login_left{
+      padding-left: 20px;
     }
     .login_btn{
       cursor:pointer;
