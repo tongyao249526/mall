@@ -1,15 +1,5 @@
 <template>
     <div class="goodsList">
-        <login @closePopup="(name)=>close(name)" v-if="loginOff"></login>
-        <div class="header fl jusc-between alic">
-                <img class="logo" src="../assets/imgs/logo.png" alt="">
-                <div class="fl">
-                    <p v-if="nickName">欢迎您{{nickName}}</p>
-                    <p class="pointer" @click="loginOut()" v-if="nickName">登出</p>
-                    <p class="pointer" @click="loginIn()" v-else>登陆</p>
-                    <p class="pointer" @click="toCartList()">购物车</p>
-                </div>
-        </div>
         <div class="main">
             <div class="main_header">
                 <p @click="sortChange()" v-if="sort === '1'">Price↑</p>
@@ -17,7 +7,7 @@
             </div>
             <div class="main_content fl">
                 <div class="price">
-                    <p>PRICE</p>
+                    <div>PRICE</div>
                     <p :style="{color: x.off?'#ff5722':''}" @click="priceChange(x)" v-for="(x,y) in priceList" :key="y">{{x.title}}</p>
                 </div>
                 <div class="goods fl">
@@ -46,7 +36,6 @@
     </div>
 </template>
 <script>
-import login from "@/components/login"
 import urlJson from '@/http/url'
 export default {
     data(){
@@ -64,12 +53,9 @@ export default {
             page:1,
             pageSize:5,
             total: 17,
-            loginOff:false,//登陆框不显示
-            nickName:'',//用户的名字
         }
     },
     components:{
-        login
     },
     computed:{
     },
@@ -79,45 +65,9 @@ export default {
         this.getData()
     },
     mounted(){
-        this.checkLogin()
+        
     },
     methods: {
-        //跳转到购物车
-        toCartList(){
-            this.$router.push({
-                path:'/cartList',
-            })
-        },
-        //验证是否已经登陆过
-        checkLogin(){
-            this.$ajax.get(urlJson.checkLogin).then((res)=>{
-                if(res.data.status === '0'){
-                    console.log('验证cookie是否存在',res)
-                    this.nickName = res.data.result
-                }
-            }).catch((err)=>{
-                console.log('err',err)
-            })
-        },
-        //点击Login
-        loginIn(){
-            this.loginOff = true
-        },
-        loginOut(){
-            this.$ajax.post(urlJson.logout).then((res)=>{
-                console.log('res',res)
-                if(res.data.status == '0'){
-                    this.nickName = ''
-                }
-            }).catch((err)=>{
-                console.log('err',err)
-            })
-        },
-        //header点击登陆成功之后
-        close(name){
-            this.loginOff = false
-            this.nickName = name
-        },
         //加入购物车
         addCart(id){
             this.$ajax.post(urlJson.addCart,{
@@ -182,21 +132,6 @@ export default {
 <style lang="less" scoped>
 .goodsList{
     min-height: 100vh;
-    background-color: #d7dfe2;
-    padding-bottom: 50px;
-    .header{
-        height: 70px;
-        margin: 0 auto;
-        padding: 0 20px 0 20px;
-        background-color: #ffffff;
-        p{
-            margin-right: 20px;
-        }
-        .logo{
-            width: 70px;
-            height: 50px;
-        }
-    }
     .main{
         padding: 0 70px;
         .main_header{
@@ -215,19 +150,34 @@ export default {
             .price{
                 width: 230px;
                 margin-right: 25px;
+                color: #605f5f;
+                font-size: 16px;
                 p{
-                    cursor:pointer;
+                    cursor: pointer;
                     margin-top: 30px;
+                }
+                p:hover{
+                    transform: translateX(6px);
+                    border-left: 2px solid #ee7a23;
+                    padding-left: 10px;
+                    transition: all .2s ease-out;
                 }
             }
             .goods{
                 flex-wrap: wrap;
                 flex: 1;
+                .goods_every:hover{
+                    transform: translateY(-6px);
+                    transition: all .5s ease-out;
+                    border: 2px solid #ee7a23;
+                    box-shadow: 0 0 20px 5px rgba(0,0,0,0.1);
+                }
                 .goods_every{
                     margin-right: 30px;
                     margin-bottom: 30px;
                     background-color: #fff;
                     padding: 10px 10px;
+                    border: 2px solid transparent;
                     .goods_img{
                         width: 208px;
                         height: 208px;

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import "@/assets/css/reset.css"
+import "@/assets/icon/iconfont.css"
 import axios from 'axios'
 import {Pagination,CheckboxGroup,Checkbox}from 'element-ui';
 Vue.use(Pagination);

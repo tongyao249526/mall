@@ -1,13 +1,16 @@
 <template>
   <div id="app">
+    <VHeader></VHeader>
     <router-view></router-view>
   </div>
 </template>
 <script>
+import VHeader from "./components/VHeader"
 export default {
   name: 'App',
   components: {
-  }
+    VHeader
+  },
 }
 </script>
 
@@ -19,6 +22,7 @@ export default {
   color: #2c3e50;
   background-color: #f5f7fc;
   min-height: 100vh;
+  padding-bottom: 50px;
 }
 .fl {
   display: -webkit-box;
@@ -67,4 +71,7 @@ export default {
 .pointer{
   cursor: pointer;
 }
+</style>
+<style lang="less" scoped>
+
 </style>
