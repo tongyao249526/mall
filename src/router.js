@@ -26,6 +26,23 @@ export default new Router({
         title:'',
       },
       component: ()=> import('@/views/address')
-  },
+    },
+    { 
+      path: '/order', 
+      name: 'order', 
+      meta:{
+        title:'',
+      },
+      component: ()=> import('@/views/order')
+    },
+    { 
+      path: '/orderSuccess', 
+      name: 'orderSuccess', 
+      meta:{
+        title:'',
+      },
+      component: ()=> import('@/views/orderSuccess')
+    },
+    
   ]
 })

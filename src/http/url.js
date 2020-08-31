@@ -27,6 +27,7 @@ let urlJson = {
     addAddress: `${url}/users/addAddress`, //添加地址
     deleteAddress:`${url}/users/deleteAddress`, //删除地址
     setDefault:`${url}/users/setDefault`, //设置默认地址
+    payMent:`${url}/users/payMent`, //设置默认地址
     
 }
 export default urlJson

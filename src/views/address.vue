@@ -7,11 +7,11 @@
         </div>
     </div>
     <!-- 确认地址 -->
-    <div class="address_confirm" v-if="titleList[0].show">
+    <div class="address_confirm" >
         <div class="address_choose">
             <p class="address_title">选择地址</p>
             <div class="address_total fl">
-                <div class="address_every" v-for="(item,index) in addressList" :key="index">
+                <div :class="item.off?'address_checked':''" @click="chooseAddress(item)" class="address_every" v-for="(item,index) in addressList" :key="index">
                     <p class="address_name">{{item.userName}}</p>
                     <p class="address_address">{{item.streetName}}</p>
                     <p class="address_phone">{{item.tel}}</p>
@@ -31,59 +31,6 @@
             <div @click="next()" class="address_btn fl cen">NEXT</div>
         </div>
     </div>
-    <!-- 确认订单 -->
-    <div class="order_confirm" v-if="titleList[1].show">
-        <p class="order_head">ORDER CONTENT</p>
-        <div>   
-            <ul class="order_title fl dir-r alic">
-                <li>商品信息</li>
-                <li>价钱</li>
-                <li>数量</li>
-                <li>总共</li>
-            </ul>
-            <ul v-for="(a,b) in 2" :key="b" class="order_ul fl dir-r alic">
-                <li class="fl alic">
-                    <img class="order_good" src="../assets/imgs/yin.jpg" alt="">
-                    <span>产品</span>
-                </li>
-                <li>$700</li>
-                <li class="fl dir-c alic">
-                    <div class="order_num">*3</div>
-                    <p class="order_stock">In Stock</p>
-                </li>
-                <li>$2000</li>
-            </ul>
-        </div>
-        <div class="order_bottom fl dir-c pointer">
-            <div>
-                <div class="fl">
-                    <p>Item subtotal:</p>
-                    <p>$2,268.00</p>
-                </div>
-                <div class="fl">
-                    <p>Shipping:</p>
-                    <p>$200</p>
-                </div>
-                <div class="fl">
-                    <p>Discount:</p>
-                    <p>$2</p>
-                </div>
-                <div class="fl">
-                    <p>Tax:</p>
-                    <p>$100.00</p>
-                </div>
-                <div class="fl">
-                    <p>Order total:</p>
-                    <p>$2,268.00</p>
-                </div>
-            </div>
-        </div>
-        <div class="order_btnBox fl">
-            <div  @click="pay()" class="order_btn fl cen pointer">支付</div>
-        </div>
-        
-    </div>
-    
 </div>
 </template>
 <script>
@@ -93,11 +40,14 @@ export default {
         return{
             addressList:[],//地址列表
             titleList:[
-                {title:'确认地址',off:true,show:false},
-                {title:'确认订单',off:false,show:true},
-                {title:'付款',off:false,show:false},
-                {title:'付款成功',off:false,show:false},
+                {title:'确认地址',off:true},
+                {title:'确认订单',off:false},
+                {title:'付款',off:false},
+                {title:'付款成功',off:false},
             ],
+            checkedList:[],
+            subTotal:'',//总金额
+            addressId:'',//地址id
         }
     },
     computed:{
@@ -110,19 +60,24 @@ export default {
         this.getAddress()
     },
     methods: {
-        // 支付
-        pay(){
-
+        //选择地址
+        chooseAddress(item){
+            for(let i=0;i<this.addressList.length;i++){
+                this.addressList[i].off = false
+            }
+            this.addressId = item.addressId
+            item.off = true
         },
         //确认地址 
         next(){
-            for(let i=0;i<this.titleList.length;i++){
-                this.titleList[i].off = false
-                this.titleList[i].show = false
+            if(this.addressId){
+                this.$router.push({
+                    path:'/order',
+                    query:{
+                        addressId: this.addressId
+                    }
+                })
             }
-            this.titleList[0].off = true
-            this.titleList[1].off = true
-            this.titleList[1].show = true
         },
         //设置默认地址
         setDefault(item){
@@ -172,7 +127,11 @@ export default {
             this.$ajax.get(urlJson.address).then((res)=>{
                 if(res.data.status === '0'){
                     console.log('地址列表',res.data.result)
-                    this.addressList = res.data.result
+                    let list = res.data.result
+                    for(let i=0;i<list.length;i++){
+                        list[i].off = false
+                    }
+                    this.addressList = list
                 }
             }).catch((err)=>{
                 console.log('err',err)
@@ -224,6 +183,12 @@ export default {
                 }
                 .address_total{
                     flex-wrap: wrap;
+                    .address_checked{
+                        transform: translateY(-6px);
+                        transition: all .5s ease-out;
+                        border: 2px solid #ee7a23 !important;
+                        box-shadow: 0 0 20px 5px rgba(0,0,0,0.1);
+                    }
                     .address_every:hover{
                         transform: translateY(-6px);
                         transition: all .5s ease-out;
@@ -266,82 +231,5 @@ export default {
                 }
             }
         }
-        // 确认订单
-        .order_confirm{
-            .order_head{
-                padding: 30px 0 20px 0;
-            }
-            .order_title{
-                height: 40px;
-                background-color: #605f5f;
-                color: #fff;
-                li:first-child{
-                    width: 49%;
-                }
-                li{
-                    width: 17%;
-                    text-align: center;
-                }
-            }
-            .order_ul{
-                padding: 35px 0;
-                border-bottom: 1px solid #e9e9e9;
-                padding-left: 20px;
-                background-color: #fff;
-                li:first-child{
-                    width: 49%;
-                }
-                li:last-child{
-                    color: #d1434a;
-                }
-                li{
-                    width: 17%;
-                    text-align: center;
-                    .order_good{
-                        width: 80px;
-                        height: 80px;
-                        margin: 0 20px 0 20px;
-                        border: 1px solid #e9e9e9;
-                    }
-                    .order_num{
-                        border: 1px solid #f0f0f0;
-                        width: auto;
-                        width: 60px;
-                    }
-                    .order_stock{
-                        color: #d1434a;
-                        margin-top: 5px;
-                        font-size: 12px;
-                    }
-                }
-            }
-            .order_bottom{
-                color: #999;
-                flex-direction: row-reverse;
-                margin-top: 40px;
-                div{
-                    div{
-                        margin-bottom: 15px;
-                        p{
-                            width: 150px;
-                            display: flex;
-                            flex-direction: row-reverse;
-                        }
-                    }
-                }
-            }
-            .order_btnBox{
-                flex-direction: row-reverse;
-                .order_btn{
-                    width: 150px;
-                    height: 40px;
-                    background-color: #d1434a;
-                    color: #fff;
-                    margin-top: 15px;
-                }
-            }
-            
-        }
-        
     }
 </style>

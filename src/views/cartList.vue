@@ -93,8 +93,13 @@ import urlJson from '@/http/url'
             })
         },
         //点击单个
-        handleCheckedCitiesChange(value) {
-            console.log('val',value)
+        handleCheckedCitiesChange(a) {
+            console.log('val',a,a.length)
+            let value = []
+            for(let m=0;m<a.length;m++){
+                value.push(a[m])
+                console.log('value',value)
+            }
             // let list
             this.totalPrice = 0
             this.checkAll = value.length === this.cartList.length;
@@ -111,6 +116,7 @@ import urlJson from '@/http/url'
                 indexList.push(i+1)
             }
             let list = this.getListDiff(indexList,value)
+            console.log('list',list,indexList,value)
             this.$ajax.post(urlJson.checkedOne,{
                 productId: this.cartList[list[0]-1].productId
             }).then((res)=>{
