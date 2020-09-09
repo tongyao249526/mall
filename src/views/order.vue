@@ -37,7 +37,7 @@
                 </div>
                 <div class="fl">
                     <p>Shipping:</p>
-                    <p>$200</p>
+                    <p>$20</p>
                 </div>
                 <div class="fl">
                     <p>Discount:</p>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="fl">
                     <p>Order total:</p>
-                    <p>${{subTotal+210}}</p>
+                    <p>${{subTotal+30}}</p>
                 </div>
             </div>
         </div>
