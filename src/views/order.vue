@@ -94,7 +94,7 @@ export default {
             }).then((res)=>{
                 if(res.data.status === '0'){
                     console.log('创建订单完成',res,res.data.result.orderId)
-                    this.$router.push({
+                    this.$router.replace({
                         path:'/orderSuccess',
                         query:{
                             info:res.data.result

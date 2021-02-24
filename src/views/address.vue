@@ -71,7 +71,7 @@ export default {
         //确认地址 
         next(){
             if(this.addressId){
-                this.$router.push({
+                this.$router.replace({
                     path:'/order',
                     query:{
                         addressId: this.addressId

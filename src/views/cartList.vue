@@ -109,7 +109,7 @@ import urlJson from '@/http/url'
         },
         //点击付款
         toAddress(){
-            this.$router.push({
+            this.$router.replace({
                 path:'/address'
             })
         },

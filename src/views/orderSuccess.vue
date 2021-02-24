@@ -51,12 +51,12 @@ export default {
     },
     methods: {
         toCartList(){
-            this.$router.push({
+            this.$router.replace({
                 path:'/cartList'
             })
         },
         toGoodsList(){
-            this.$router.push({
+            this.$router.replace({
                 path:'/'
             })
         }
